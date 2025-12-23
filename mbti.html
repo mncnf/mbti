@@ -115,23 +115,28 @@
             ESFP: "esfp-entertainer-female"
         };
 
+        // ランキング形式
+        // { rank: 1, type: "ISFJ", name: "擁護者", desc: "相手が傷つく姿を想像するだけで胸が痛み、「終わりにしよう」という一言を、どうしても飲み込んでしまいます。自分が我慢すればいい、と最後まで相手を思いやってしまうタイプ。" },
+
+        // ランキングなし形式
+        // { type: "ISFJ", name: "擁護者", desc: "相手が傷つく姿を想像するだけで胸が痛み、「終わりにしよう」という一言を、どうしても飲み込んでしまいます。自分が我慢すればいい、と最後まで相手を思いやってしまうタイプ。" },
         const allData = [
-            { rank: 1, type: "ISFJ", desc: "相手が傷つく姿を想像するだけで胸が痛み、「終わりにしよう」という一言を、どうしても飲み込んでしまいます。自分が我慢すればいい、と最後まで相手を思いやってしまうタイプ。" },
-            { rank: 2, type: "INFJ", desc: "気持ちが冷めていても、「ここまで一緒に過ごした意味」を大切にしたくて、最後の最後まで理解し合える可能性を探し続けます。" },
-            { rank: 3, type: "INFP", desc: "心のどこかで「もしかしたら、まだ何か変わるかもしれない」そんな小さな希望を手放せず、別れを先延ばしにしてしまいます。" },
-            { rank: 4, type: "ENFJ", desc: "別れを意識しながらも、「もう一度だけ頑張ってみよう」と自分を奮い立たせてしまうタイプ。相手の未来まで考えてしまい、簡単に終わりを選べません。" },
-            { rank: 5, type: "ISFP", desc: "気持ちは薄れていても、一緒に過ごした時間や思い出があまりにも温かくて、簡単に手放すことができません。" },
-            { rank: 6, type: "ESFJ", desc: "「まだ相手は自分のことを好きかもしれない」そう思うと、その気持ちを無視することができず、別れを言えなくなります。" },
-            { rank: 7, type: "ENFP", desc: "愛が冷めても、別れた後の寂しさや空虚感を想像してしまい、怖くて一歩が踏み出せません。" },
-            { rank: 8, type: "INTJ", desc: "感情の整理はできているのに、関係を終わらせるための“行動”に移すのが難しいと感じるタイプ。" },
-            { rank: 9, type: "ISTJ", desc: "長い時間をかけて築いた信頼を、簡単に捨ててしまうことができず、決断が遅れがちです。" },
-            { rank: 10, type: "ENTJ", desc: "「本当にこれで正しいのか」という確信が持てるまで、別れの決断を後回しにしがち。" },
-            { rank: 11, type: "INTP", desc: "感情よりも理屈が先に立つものの、頭の中で整理が完全につくまでは、行動に移しません。" },
-            { rank: 12, type: "ISTP", desc: "気持ちはすでに離れているのに、別れを切り出す言葉を口にするのが気まずく感じてしまいます。" },
-            { rank: 13, type: "ESTJ", desc: "現実的には「もう終わり」と分かっていても、実際に行動として区切りをつけるまでに時間がかかるタイプ。" },
-            { rank: 14, type: "ESFP", desc: "別れた後の孤独を恐れて、「もう少しだけ一緒にいよう」と関係を引き延ばしてしまいます。" },
-            { rank: 15, type: "ENTP", desc: "別れた後の気まずさが苦手で、冗談や軽い会話で時間を稼いでしまいがち。" },
-            { rank: 16, type: "ESTP", desc: "気持ちはすでに次へ向いているものの、直接はっきり伝えることに強い負担を感じます。" }
+            { rank: 1, type: "ISFJ", name: "擁護者", desc: "相手が傷つく姿を想像するだけで胸が痛み、「終わりにしよう」という一言を、どうしても飲み込んでしまいます。自分が我慢すればいい、と最後まで相手を思いやってしまうタイプ。" },
+            { rank: 2, type: "INFJ", name: "提唱者", desc: "気持ちが冷めていても、「ここまで一緒に過ごした意味」を大切にしたくて、最後の最後まで理解し合える可能性を探し続けます。" },
+            { rank: 3, type: "INFP", name: "仲介者", desc: "心のどこかで「もしかしたら、まだ何か変わるかもしれない」そんな小さな希望を手放せず、別れを先延ばしにしてしまいます。" },
+            { rank: 4, type: "ENFJ", name: "主人公", desc: "別れを意識しながらも、「もう一度だけ頑張ってみよう」と自分を奮い立たせてしまうタイプ。相手の未来まで考えてしまい、簡単に終わりを選べません。" },
+            { rank: 5, type: "ISFP", name: "冒険家", desc: "気持ちは薄れていても、一緒に過ごした時間や思い出があまりにも温かくて、簡単に手放すことができません。" },
+            { rank: 6, type: "ESFJ", name: "領事", desc: "「まだ相手は自分のことを好きかもしれない」そう思うと、その気持ちを無視することができず、別れを言えなくなります。" },
+            { rank: 7, type: "ENFP", name: "運動家", desc: "愛が冷めても、別れた後の寂しさや空虚感を想像してしまい、怖くて一歩が踏み出せません。" },
+            { rank: 8, type: "INTJ", name: "建築家", desc: "感情の整理はできているのに、関係を終わらせるための“行動”に移すのが難しいと感じるタイプ。" },
+            { rank: 9, type: "ISTJ", name: "管理者", desc: "長い時間をかけて築いた信頼を、簡単に捨ててしまうことができず、決断が遅れがちです。" },
+            { rank: 10, type: "ENTJ", name: "指揮官", desc: "「本当にこれで正しいのか」という確信が持てるまで、別れの決断を後回しにしがち。" },
+            { rank: 11, type: "INTP", name: "論理学者", desc: "感情よりも理屈が先に立つものの、頭の中で整理が完全につくまでは、行動に移しません。" },
+            { rank: 12, type: "ISTP", name: "巨匠", desc: "気持ちはすでに離れているのに、別れを切り出す言葉を口にするのが気まずく感じてしまいます。" },
+            { rank: 13, type: "ESTJ", name: "幹部", desc: "現実的には「もう終わり」と分かっていても、実際に行動として区切りをつけるまでに時間がかかるタイプ。" },
+            { rank: 14, type: "ESFP", name: "エンターテイナー", desc: "別れた後の孤独を恐れて、「もう少しだけ一緒にいよう」と関係を引き延ばしてしまいます。" },
+            { rank: 15, type: "ENTP", name: "討論者", desc: "別れた後の気まずさが苦手で、冗談や軽い会話で時間を稼いでしまいがち。" },
+            { rank: 16, type: "ESTP", name: "起業家", desc: "気持ちはすでに次へ向いているものの、直接はっきり伝えることに強い負担を感じます。" }
         ];
 
         const itemsPerPage = 4;
@@ -161,13 +166,14 @@
 
             pageData.forEach(item => {
                 const avatarUrl = `${avatarBase}${avatarMap[item.type]}.svg?v=3`;
+                const rankBadge = item.rank ? `<span class="rank-badge w-fit">${item.rank}位</span>` : '';
                 document.write(`
                     <div class="glass-card">
                         <div class="flex items-center gap-3 mb-2">
                             <img src="${avatarUrl}" class="avatar-img" alt="${item.type}" onerror="this.src='https://www.16personalities.com/static/images/personality-types/avatars/${item.type.toLowerCase()}.svg'">
                             <div class="flex flex-col gap-1">
-                                <span class="rank-badge w-fit">${item.rank}位</span>
-                                <span class="font-bold text-sm text-purple-900">${item.type}</span>
+                                ${rankBadge}
+                                <span class="font-bold text-sm text-purple-900">${item.type} ${item.name}</span>
                             </div>
                         </div>
                         <p class="text-[11px] text-purple-800 leading-relaxed overflow-hidden">
