@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 別れを切り出せないランキング</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background: #f3e8ff;
+            color: #4c1d95;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            align-items: center;
+            padding: 60px 20px;
+            margin: 0;
+        }
+        /* Instagram Feed Ratio (1:1) */
+        .insta-canvas {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, #fdfaff 0%, #f3e8ff 100%);
+            padding: 40px 30px 30px 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            box-shadow: 0 15px 50px rgba(124, 58, 237, 0.1);
+            overflow: hidden;
+        }
+        .kiwi-font {
+            font-family: 'Kiwi Maru', serif;
+        }
+        /* 2x2 Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 15px;
+            flex-grow: 1;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .rank-badge {
+            background: linear-gradient(45deg, #a855f7, #7c3aed);
+            color: white;
+            font-size: 0.7rem;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .page-indicator {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #a855f7;
+            background: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .avatar-img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+        /* Background decorations */
+        .bg-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(216, 180, 254, 0.3) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        // 公式アバターのベースURL
+        const avatarBase = "https://www.16personalities.com/static/images/personality-types/avatars/";
+        
+        // 指定されたSVGファイル名のマッピング (性別指定含む)
+        const avatarMap = {
+            INTJ: "intj-architect-male",
+            INTP: "intp-logician-female",
+            ENTJ: "entj-commander-female",
+            ENTP: "entp-debater-male",
+            INFJ: "infj-advocate-male",
+            INFP: "infp-mediator-female",
+            ENFJ: "enfj-protagonist-male",
+            ENFP: "enfp-campaigner-female",
+            ISTJ: "istj-logistician-male",
+            ISFJ: "isfj-defender-female",
+            ESTJ: "estj-executive-female",
+            ESFJ: "esfj-consul-male",
+            ISTP: "istp-virtuoso-male",
+            ISFP: "isfp-adventurer-female",
+            ESTP: "estp-entrepreneur-male",
+            ESFP: "esfp-entertainer-female"
+        };
+
+        const allData = [
+            { rank: 1, type: "ISFJ", desc: "相手が傷つく姿を想像するだけで胸が痛み、「終わりにしよう」という一言を、どうしても飲み込んでしまいます。自分が我慢すればいい、と最後まで相手を思いやってしまうタイプ。" },
+            { rank: 2, type: "INFJ", desc: "気持ちが冷めていても、「ここまで一緒に過ごした意味」を大切にしたくて、最後の最後まで理解し合える可能性を探し続けます。" },
+            { rank: 3, type: "INFP", desc: "心のどこかで「もしかしたら、まだ何か変わるかもしれない」そんな小さな希望を手放せず、別れを先延ばしにしてしまいます。" },
+            { rank: 4, type: "ENFJ", desc: "別れを意識しながらも、「もう一度だけ頑張ってみよう」と自分を奮い立たせてしまうタイプ。相手の未来まで考えてしまい、簡単に終わりを選べません。" },
+            { rank: 5, type: "ISFP", desc: "気持ちは薄れていても、一緒に過ごした時間や思い出があまりにも温かくて、簡単に手放すことができません。" },
+            { rank: 6, type: "ESFJ", desc: "「まだ相手は自分のことを好きかもしれない」そう思うと、その気持ちを無視することができず、別れを言えなくなります。" },
+            { rank: 7, type: "ENFP", desc: "愛が冷めても、別れた後の寂しさや空虚感を想像してしまい、怖くて一歩が踏み出せません。" },
+            { rank: 8, type: "INTJ", desc: "感情の整理はできているのに、関係を終わらせるための“行動”に移すのが難しいと感じるタイプ。" },
+            { rank: 9, type: "ISTJ", desc: "長い時間をかけて築いた信頼を、簡単に捨ててしまうことができず、決断が遅れがちです。" },
+            { rank: 10, type: "ENTJ", desc: "「本当にこれで正しいのか」という確信が持てるまで、別れの決断を後回しにしがち。" },
+            { rank: 11, type: "INTP", desc: "感情よりも理屈が先に立つものの、頭の中で整理が完全につくまでは、行動に移しません。" },
+            { rank: 12, type: "ISTP", desc: "気持ちはすでに離れているのに、別れを切り出す言葉を口にするのが気まずく感じてしまいます。" },
+            { rank: 13, type: "ESTJ", desc: "現実的には「もう終わり」と分かっていても、実際に行動として区切りをつけるまでに時間がかかるタイプ。" },
+            { rank: 14, type: "ESFP", desc: "別れた後の孤独を恐れて、「もう少しだけ一緒にいよう」と関係を引き延ばしてしまいます。" },
+            { rank: 15, type: "ENTP", desc: "別れた後の気まずさが苦手で、冗談や軽い会話で時間を稼いでしまいがち。" },
+            { rank: 16, type: "ESTP", desc: "気持ちはすでに次へ向いているものの、直接はっきり伝えることに強い負担を感じます。" }
+        ];
+
+        const itemsPerPage = 4;
+        const totalPages = Math.ceil(allData.length / itemsPerPage);
+
+        for (let i = 0; i < totalPages; i++) {
+            const pageData = allData.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
+            
+            document.write(`
+                <div class="insta-canvas">
+                    <div class="bg-circle" style="top: -50px; left: -50px;"></div>
+                    <div class="bg-circle" style="bottom: -50px; right: -50px;"></div>
+                    
+                    <span class="page-indicator">${i + 1} / ${totalPages}</span>
+                    
+                    <header class="text-center mb-6 relative z-10">
+                        <div class="inline-block mb-1 px-3 py-0.5 rounded-full bg-purple-200 text-purple-700 text-[10px] font-bold tracking-widest uppercase">
+                            MBTI Analysis
+                        </div>
+                        <h1 class="text-xl font-bold kiwi-font leading-tight text-purple-900">
+                            💭 冷めてるのに別れを<br>切り出せないランキング
+                        </h1>
+                    </header>
+
+                    <div class="grid-container relative z-10">
+            `);
+
+            pageData.forEach(item => {
+                const avatarUrl = `${avatarBase}${avatarMap[item.type]}.svg?v=3`;
+                document.write(`
+                    <div class="glass-card">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img src="${avatarUrl}" class="avatar-img" alt="${item.type}" onerror="this.src='https://www.16personalities.com/static/images/personality-types/avatars/${item.type.toLowerCase()}.svg'">
+                            <div class="flex flex-col gap-1">
+                                <span class="rank-badge w-fit">${item.rank}位</span>
+                                <span class="font-bold text-sm text-purple-900">${item.type}</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-purple-800 leading-relaxed overflow-hidden">
+                            ${item.desc}
+                        </p>
+                    </div>
+                `);
+            });
+
+            document.write(`
+                    </div>
+                    <footer class="mt-4 flex justify-between items-center text-[10px] text-purple-400 border-t border-purple-100 pt-4 relative z-10">
+                        <span>@mbti.ski</span>
+                        <span class="font-bold text-purple-600">${i === totalPages - 1 ? '' : 'Swipe ⮕'}</span>
+                    </footer>
+                </div>
+            `);
+        }
+    </script>
+
+</body>
+</html>
