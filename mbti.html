@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Zen Maru Gothic', sans-serif;
+            font-family: "Rounded M PLUS", sans-serif;
             background: #f3e8ff;
             color: #4c1d95;
             display: flex;
@@ -18,7 +18,6 @@
             padding: 60px 20px;
             margin: 0;
         }
-        /* Instagram Feed Ratio (1:1) */
         .insta-canvas {
             width: 600px;
             height: 600px;
@@ -31,10 +30,6 @@
             box-shadow: 0 15px 50px rgba(124, 58, 237, 0.1);
             overflow: hidden;
         }
-        .kiwi-font {
-            font-family: 'Kiwi Maru', serif;
-        }
-        /* 2x2 Grid Layout */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -46,19 +41,53 @@
             background: rgba(255, 255, 255, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 20px;
-            padding: 15px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             position: relative;
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            overflow: hidden;
+        }
+        .card-header {
+            text-align: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            min-height: 0;
+        }
+        .card-left {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+        }
+        .avatar-img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
         }
         .rank-badge {
             background: linear-gradient(45deg, #a855f7, #7c3aed);
             color: white;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             padding: 1px 8px;
             border-radius: 10px;
             font-weight: bold;
+            margin-right: 6px;
         }
         .page-indicator {
             position: absolute;
@@ -72,13 +101,6 @@
             border-radius: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-        .avatar-img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            margin-bottom: 5px;
-        }
-        /* Background decorations */
         .bg-circle {
             position: absolute;
             width: 300px;
@@ -92,10 +114,8 @@
 <body>
 
     <script>
-        // 公式アバターのベースURL
         const avatarBase = "https://www.16personalities.com/static/images/personality-types/avatars/";
         
-        // 指定されたSVGファイル名のマッピング (性別指定含む)
         const avatarMap = {
             INTJ: "intj-architect-male",
             INTP: "intp-logician-female",
@@ -115,28 +135,23 @@
             ESFP: "esfp-entertainer-female"
         };
 
-        // ランキング形式
-        // { rank: 1, type: "ISFJ", name: "擁護者", desc: "相手が傷つく姿を想像するだけで胸が痛み、「終わりにしよう」という一言を、どうしても飲み込んでしまいます。自分が我慢すればいい、と最後まで相手を思いやってしまうタイプ。" },
-
-        // ランキングなし形式
-        // { type: "ISFJ", name: "擁護者", desc: "相手が傷つく姿を想像するだけで胸が痛み、「終わりにしよう」という一言を、どうしても飲み込んでしまいます。自分が我慢すればいい、と最後まで相手を思いやってしまうタイプ。" },
         const allData = [
-            { type: "INTJ", name: "建築家", desc: "自分の時間を侵害されたり、非効率を強要されると遮断します。未来に価値がないと判断した瞬間に、関係を完全に終了させる冷徹な一面を持っています。" },
-            { type: "INTP", name: "論理学者", desc: "感情的な圧迫や、論理を無視される関係には心を閉ざします。頭の中で整理がつくまでは何も言いませんが、一度「無意味」と結論が出れば、二度と心を開きません。" },
-            { type: "ENTJ", name: "指揮官", desc: "責任を回避する人や、成長意欲のない人とははっきり線を引きます。目標に向かう自分の歩みを止める存在だと感じた瞬間に、関係を切り捨てます。" },
-            { type: "ENTP", name: "討論者", desc: "思考を制限する相手には、即座に興味を失います。自由な発想を否定され、退屈なルールを押し付けられた瞬間、その場から精神的に離脱してしまいます。" },
-            { type: "INFJ", name: "提唱者", desc: "心を簡単に開かず、信頼が積み重なってから本心を見せます。しかし、その信頼を裏切られたと悟った瞬間、二度と修復不可能なレベルで扉を閉ざします。" },
-            { type: "INFP", name: "仲介者", desc: "感情を軽く扱われる関係には、静かに距離を置きます。自分の大切にしている価値観を否定されたと感じたとき、何も言わずに心の世界に閉じこもってしまいます。" },
-            { type: "ENFJ", name: "主人公", desc: "一方的な要求が積み重なると、心の中で扉を閉めます。相手のために尽くす自分を「利用されているだけだ」と確信したとき、その優しさは終わりを迎えます。" },
-            { type: "ENFP", name: "運動家", desc: "自由を侵害された瞬間、関係の一線を引きます。束縛や型にはめられることを嫌い、自分の可能性を潰す相手だと感じたら、迷わず距離を取ります。" },
-            { type: "ISTJ", name: "管理者", desc: "ルールや約束を何度も破る人を遠ざけます。誠実さを欠く行動が繰り返されると、相手を「信頼に値しない存在」と見なし、一切の感情を排除して対応します。" },
-            { type: "ISFJ", name: "擁護者", desc: "利用されていると感じた瞬間、身を引きます。相手を思いやる気持ちが踏みにじられたと気づいたとき、最後まで我慢していた心が静かに、そして完全に冷めてしまいます。" },
-            { type: "ESTJ", name: "幹部", desc: "無能さや無責任さが繰り返されると、関係を整理します。社会的な役割や義務を果たさない相手に対しては、厳しい決断を下し、生活圏から排除します。" },
-            { type: "ESFJ", name: "領事", desc: "真心を無視され、認められないと関係を遠ざける。自分の献身が感謝されず、当たり前のように扱われたとき、所属していたコミュニティごと去る決意をします。" },
-            { type: "ISTP", name: "巨匠", desc: "過度な干渉を感じた瞬間、即座に距離を取ります。説明や言い訳をすることなく、自分の領域を侵す存在からは物理的・精神的にスッと姿を消してしまいます。" },
-            { type: "ISFP", name: "冒険家", desc: "気持ちを無視されると、静かに関係を整理する。対立を望まないため表面上は変わりませんが、心の中ではすでに相手を「いないもの」として処理し始めます。" },
-            { type: "ESTP", name: "起業家", desc: "自由を抑えつけられたり、スピードを落とされる関係を避ける。刺激のない停滞した関係や、行動を制限する束縛を感じた瞬間に、次のターゲットへと向かいます。" },
-            { type: "ESFP", name: "エンターテイナー", desc: "楽しさを奪う継続的な批判には距離を置きます。常に前向きでいたい自分を否定し、暗い気持ちにさせる相手とは、どんなに親しくても付き合いを止めます。" }
+            { type: "INTJ", name: "建築家", desc: "自分の時間を侵害されたり、非効率を強要されると遮断する。" },
+            { type: "INTP", name: "論理学者", desc: "感情的な圧迫や、論理を無視される関係には心を閉ざす。" },
+            { type: "ENTJ", name: "指揮官", desc: "責任を回避する人とは、はっきり線を引く。" },
+            { type: "ENTP", name: "討論者", desc: "思考を制限する相手には、興味を失う。" },
+            { type: "INFJ", name: "提唱者", desc: "心を簡単に開かず、信頼が積み重なってから本心を見せる。" },
+            { type: "INFP", name: "仲介者", desc: "感情を軽く扱われる関係には、静かに距離を置く。" },
+            { type: "ENFJ", name: "主人公", desc: "一方的な要求が積み重なると、心の中で扉を閉める。" },
+            { type: "ENFP", name: "運動家", desc: "自由を侵害された瞬間、関係の一線を引く。" },
+            { type: "ISTJ", name: "管理者", desc: "ルールや約束を何度も破る人を遠ざける。" },
+            { type: "ISFJ", name: "擁護者", desc: "利用されていると感じた瞬間、身を引く。" },
+            { type: "ESTJ", name: "幹部", desc: "無能さや無責任さが繰り返されると、関係を整理する。" },
+            { type: "ESFJ", name: "領事", desc: "真心を無視され、認められないと関係を遠ざける。" },
+            { type: "ISTP", name: "巨匠", desc: "過度な干渉を感じた瞬間、即座に距離を取る。" },
+            { type: "ISFP", name: "冒険家", desc: "気持ちを無視されると、静かに関係を整理する。" },
+            { type: "ESTP", name: "起業家", desc: "自由を抑えつけられたり、スピードを落とされる関係を避ける。" },
+            { type: "ESFP", name: "エンターテイナー", desc: "楽しさを奪う継続的な批判には距離を置く。" }
         ];
 
         const itemsPerPage = 4;
@@ -153,11 +168,8 @@
                     <span class="page-indicator">${i + 1} / ${totalPages}</span>
                     
                     <header class="text-center mb-6 relative z-10">
-                        <div class="inline-block mb-1 px-3 py-0.5 rounded-full bg-purple-200 text-purple-700 text-[10px] font-bold tracking-widest uppercase">
-                            MBTI Analysis
-                        </div>
-                        <h1 class="text-xl font-bold kiwi-font leading-tight text-purple-900">
-                            関係の中で<br>「心のドアを閉じる瞬間」
+                        <h1 class="text-[20px] font-bold kiwi-font leading-tight text-purple-900">
+                            MBTI別<br>関係の中で「心のドアを閉じる瞬間」
                         </h1>
                     </header>
 
@@ -166,19 +178,22 @@
 
             pageData.forEach(item => {
                 const avatarUrl = `${avatarBase}${avatarMap[item.type]}.svg?v=3`;
-                const rankBadge = item.rank ? `<span class="rank-badge w-fit">${item.rank}位</span>` : '';
+                const rankBadge = item.rank ? `<span class="rank-badge">${item.rank}位</span>` : '';
                 document.write(`
                     <div class="glass-card">
-                        <div class="flex items-center gap-3 mb-2">
-                            <img src="${avatarUrl}" class="avatar-img" alt="${item.type}" onerror="this.src='https://www.16personalities.com/static/images/personality-types/avatars/${item.type.toLowerCase()}.svg'">
-                            <div class="flex flex-col gap-1">
-                                ${rankBadge}
-                                <span class="font-bold text-sm text-purple-900">${item.type} ${item.name}</span>
+                        <div class="card-header">
+                            ${rankBadge}<span class="font-bold text-[18px] text-purple-900">${item.type} ${item.name}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-left">
+                                <img src="${avatarUrl}" class="avatar-img" alt="${item.type}" onerror="this.src='https://www.16personalities.com/static/images/personality-types/avatars/${item.type.toLowerCase()}.svg'">
+                            </div>
+                            <div class="card-right">
+                                <p class="text-[14px] font-bold text-purple-800 leading-relaxed text-center">
+                                    ${item.desc}
+                                </p>
                             </div>
                         </div>
-                        <p class="text-[11px] text-purple-800 leading-relaxed overflow-hidden">
-                            ${item.desc}
-                        </p>
                     </div>
                 `);
             });
