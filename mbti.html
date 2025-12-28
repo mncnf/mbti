@@ -48,6 +48,18 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
             overflow: hidden;
         }
+        .corner-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, #a855f7, #7c3aed);
+            color: white;
+            font-size: 0.65rem;
+            padding: 4px 10px 4px 8px;
+            border-radius: 0 0 20px 0;
+            font-weight: bold;
+            z-index: 1;
+        }
         .card-header {
             text-align: center;
             padding-bottom: 8px;
@@ -79,15 +91,6 @@
             width: 100px;
             height: 100px;
             object-fit: contain;
-        }
-        .rank-badge {
-            background: linear-gradient(45deg, #a855f7, #7c3aed);
-            color: white;
-            font-size: 0.65rem;
-            padding: 1px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-            margin-right: 6px;
         }
         .page-indicator {
             position: absolute;
@@ -136,23 +139,23 @@
         };
 
         const allData = [
-            { type: "INTJ", name: "建築家", desc: "自分の時間を侵害されたり、非効率を強要されると遮断する。" },
-            { type: "INTP", name: "論理学者", desc: "感情的な圧迫や、論理を無視される関係には心を閉ざす。" },
-            { type: "ENTJ", name: "指揮官", desc: "責任を回避する人とは、はっきり線を引く。" },
-            { type: "ENTP", name: "討論者", desc: "思考を制限する相手には、興味を失う。" },
-            { type: "INFJ", name: "提唱者", desc: "心を簡単に開かず、信頼が積み重なってから本心を見せる。" },
-            { type: "INFP", name: "仲介者", desc: "感情を軽く扱われる関係には、静かに距離を置く。" },
-            { type: "ENFJ", name: "主人公", desc: "一方的な要求が積み重なると、心の中で扉を閉める。" },
-            { type: "ENFP", name: "運動家", desc: "自由を侵害された瞬間、関係の一線を引く。" },
-            { type: "ISTJ", name: "管理者", desc: "ルールや約束を何度も破る人を遠ざける。" },
-            { type: "ISFJ", name: "擁護者", desc: "利用されていると感じた瞬間、身を引く。" },
-            { type: "ESTJ", name: "幹部", desc: "無能さや無責任さが繰り返されると、関係を整理する。" },
-            { type: "ESFJ", name: "領事", desc: "真心を無視され、認められないと関係を遠ざける。" },
-            { type: "ISTP", name: "巨匠", desc: "過度な干渉を感じた瞬間、即座に距離を取る。" },
-            { type: "ISFP", name: "冒険家", desc: "気持ちを無視されると、静かに関係を整理する。" },
-            { type: "ESTP", name: "起業家", desc: "自由を抑えつけられたり、スピードを落とされる関係を避ける。" },
-            { type: "ESFP", name: "エンターテイナー", desc: "楽しさを奪う継続的な批判には距離を置く。" }
-        ];
+  { "rank": 1, "type": "ESTP", "name": "起業家", "desc": "口数が減り、冗談を言わなくなる。他の約束ばかり優先する" },
+  { "rank": 2, "type": "ESFP", "name": "エンターテイナー", "desc": "リアクションが薄くなり、明るさが消えたらほぼ終わり" },
+  { "rank": 3, "type": "ENFP", "name": "運動家", "desc": "連絡が短文になり、感情の起伏が激しくなる。急な提案もしなくなる" },
+  { "rank": 4, "type": "ENTP", "name": "討論者", "desc": "おしゃべりが急に減り、事務的な返事だけになる" },
+  { "rank": 5, "type": "ENFJ", "name": "主人公", "desc": "今までの気遣いをやめ、会話が徐々に冷たくなる" },
+  { "rank": 6, "type": "ESFJ", "name": "領事", "desc": "日常の共有がなくなり、連絡頻度が明らかに減る" },
+  { "rank": 7, "type": "ENTJ", "name": "指揮官", "desc": "将来の計画から相手を外し、不満をストレートに言い始める" },
+  { "rank": 8, "type": "ESTJ", "name": "幹部", "desc": "欠点ばかり指摘するようになり、責任感のある態度が消える" },
+  { "rank": 9, "type": "INFJ", "name": "提唱者", "desc": "表面上は笑っているが、心はすでに離れている" },
+  { "rank": 10, "type": "ISFP", "name": "冒険家", "desc": "連絡は返すが、気持ちはかなり冷めている" },
+  { "rank": 11, "type": "INFP", "name": "仲介者", "desc": "感情表現が減り、一緒にいても上の空" },
+  { "rank": 12, "type": "ISFJ", "name": "擁護者", "desc": "我慢を続けた末、突然はっきり距離を置く" },
+  { "rank": 13, "type": "INTP", "name": "論理学者", "desc": "会話自体を避け、新しい話題を一切出さなくなる" },
+  { "rank": 14, "type": "ISTP", "name": "巨匠", "desc": "何も言わずに連絡を断ち、影のように消える" },
+  { "rank": 15, "type": "INTJ", "name": "建築家", "desc": "未練なし。即ブロック・完全遮断" },
+  { "rank": 16, "type": "ISTJ", "name": "管理者", "desc": "「終わった」と判断したら、二度と振り返らない" }
+];
 
         const itemsPerPage = 4;
         const totalPages = Math.ceil(allData.length / itemsPerPage);
@@ -166,10 +169,9 @@
                     <div class="bg-circle" style="bottom: -50px; right: -50px;"></div>
                     
                     <span class="page-indicator">${i + 1} / ${totalPages}</span>
-                    
                     <header class="text-center mb-6 relative z-10">
                         <h1 class="text-[20px] font-bold kiwi-font leading-tight text-purple-900">
-                            MBTI別<br>関係の中で「心のドアを閉じる瞬間」
+                            MBTI別<br>💔別れが近いサインが出やすいランキング
                         </h1>
                     </header>
 
@@ -178,18 +180,19 @@
 
             pageData.forEach(item => {
                 const avatarUrl = `${avatarBase}${avatarMap[item.type]}.svg?v=3`;
-                const rankBadge = item.rank ? `<span class="rank-badge">${item.rank}位</span>` : '';
+                const cornerBadge = item.rank ? `<span class="corner-badge">${item.rank}</span>` : '';
                 document.write(`
                     <div class="glass-card">
+                        ${cornerBadge}
                         <div class="card-header">
-                            ${rankBadge}<span class="font-bold text-[18px] text-purple-900">${item.type} ${item.name}</span>
+                            <span class="font-bold text-[18px] text-purple-900">${item.type} ${item.name}</span>
                         </div>
                         <div class="card-body">
                             <div class="card-left">
                                 <img src="${avatarUrl}" class="avatar-img" alt="${item.type}" onerror="this.src='https://www.16personalities.com/static/images/personality-types/avatars/${item.type.toLowerCase()}.svg'">
                             </div>
                             <div class="card-right">
-                                <p class="text-[14px] font-bold text-purple-800 leading-relaxed text-center">
+                                <p class="text-[14px] font-bold text-purple-800 leading-relaxed">
                                     ${item.desc}
                                 </p>
                             </div>
