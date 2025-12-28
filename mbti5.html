@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Rounded M PLUS", sans-serif;
+            background: #f3e8ff;
+            color: #4c1d95;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            align-items: center;
+            padding: 60px 20px;
+            margin: 0;
+        }
+        .insta-canvas {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, #fdfaff 0%, #f3e8ff 100%);
+            padding: 20px 20px 15px 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            box-shadow: 0 15px 50px rgba(124, 58, 237, 0.1);
+            overflow: hidden;
+        }
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 14px;
+            padding: 6px 12px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            flex: 1;
+            overflow: hidden;
+        }
+        .corner-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, #a855f7, #7c3aed);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 8px 2px 5px;
+            border-radius: 0 0 14px 0;
+            font-weight: bold;
+        }
+        .avatar-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 1px;
+            min-width: 0;
+        }
+        .type-name {
+            font-weight: bold;
+            font-size: 18px;
+            color: #581c87;
+            padding-bottom: 2px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            margin-bottom: 2px;
+        }
+        .desc {
+            font-size: 14px;
+            font-weight: bold;
+            color: #6b21a8;
+            line-height: 1.3;
+            height: 2.6em;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .page-indicator {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #a855f7;
+            background: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .bg-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(216, 180, 254, 0.3) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        const avatarBase = "https://www.16personalities.com/static/images/personality-types/avatars/";
+        
+        const avatarMap = {
+            INTJ: "intj-architect-male",
+            INTP: "intp-logician-female",
+            ENTJ: "entj-commander-female",
+            ENTP: "entp-debater-male",
+            INFJ: "infj-advocate-male",
+            INFP: "infp-mediator-female",
+            ENFJ: "enfj-protagonist-male",
+            ENFP: "enfp-campaigner-female",
+            ISTJ: "istj-logistician-male",
+            ISFJ: "isfj-defender-female",
+            ESTJ: "estj-executive-female",
+            ESFJ: "esfj-consul-male",
+            ISTP: "istp-virtuoso-male",
+            ISFP: "isfp-adventurer-female",
+            ESTP: "estp-entrepreneur-male",
+            ESFP: "esfp-entertainer-female"
+        };
+
+        const allData = [
+            { "rank": 1, "type": "INTP", "name": "論理学者", "desc": "感情表現が遅く、説明は長め。<br>愛情より「理解」を優先しがちで、相手が寂しくなりやすい。" },
+            { "rank": 2, "type": "ISTP", "name": "巨匠", "desc": "自由が最優先。<br>連絡や感情共有が少なく、距離を感じさせやすい。" },
+            { "rank": 3, "type": "ENTP", "name": "討論者", "desc": "最初のときめきは強いが、持続力が弱め。<br>真剣になると一気に興味が冷めることも。" },
+            { "rank": 4, "type": "INFP", "name": "仲介者", "desc": "気持ちは深いが、現実的な対応が遅い。<br>理想と実際の行動にギャップが出やすい。" },
+            { "rank": 5, "type": "INTJ", "name": "建築家", "desc": "感情より効率を重視。<br>恋愛も「判断対象」になると、冷たく見えることがある。" }
+        ];
+
+        document.write(`
+            <div class="insta-canvas">
+                <div class="bg-circle" style="top: -50px; left: -50px;"></div>
+                <div class="bg-circle" style="bottom: -50px; right: -50px;"></div>
+                <header class="text-center mb-3 relative z-10">
+                    <h1 class="text-[18px] font-bold kiwi-font leading-tight text-purple-900">
+                        恋愛が一番難しい男性 MBTI TOP5
+                    </h1>
+                </header>
+
+                <div class="list-container relative z-10">
+        `);
+
+        allData.forEach(item => {
+            const avatarUrl = `${avatarBase}${avatarMap[item.type]}.svg?v=3`;
+            document.write(`
+                <div class="glass-card">
+                    <span class="corner-badge">${item.rank}</span>
+                    <img src="${avatarUrl}" class="avatar-img" alt="${item.type}">
+                    <div class="card-content">
+                        <span class="type-name">${item.type} ${item.name}</span>
+                        <p class="desc">${item.desc}</p>
+                    </div>
+                </div>
+            `);
+        });
+
+        document.write(`
+                </div>
+                <footer class="mt-2 flex justify-between items-center text-[10px] text-purple-400 border-t border-purple-100 pt-2 relative z-10">
+                    <span>@mbti.ski</span>
+                </footer>
+            </div>
+        `);
+    </script>
+
+</body>
+</html>
