@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Rounded M PLUS", sans-serif;
+            background: #fff0f3;
+            color: #4c1d95;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            align-items: center;
+            padding: 60px 20px;
+            margin: 0;
+        }
+        .insta-canvas {
+            width: 600px;
+            height: 600px;
+            background: #fff7f8;
+            padding: 40px 30px 30px 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            box-shadow: 0 15px 50px rgba(124, 58, 237, 0.1);
+            overflow: hidden;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 15px;
+            flex-grow: 1;
+        }
+        .glass-card {
+            border-radius: 20px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            overflow: hidden;
+        }
+        /* 分析家 (NT) - 紫 */
+        .glass-card.analyst {
+            background: rgba(136, 97, 154, 0.1);
+        }
+        .glass-card.analyst .card-header {
+            border-bottom-color: rgba(136, 97, 154, 0.25);
+        }
+        .glass-card.analyst .type-name {
+            color: #88619a;
+        }
+        .glass-card.analyst .corner-badge {
+            background: linear-gradient(45deg, #88619a, #6b4d7a);
+        }
+        .glass-card.analyst .card-desc {
+            color: #6b4d7a;
+        }
+
+        /* 外交官 (NF) - 緑 */
+        .glass-card.diplomat {
+            background: rgba(51, 164, 116, 0.1);
+        }
+        .glass-card.diplomat .card-header {
+            border-bottom-color: rgba(51, 164, 116, 0.25);
+        }
+        .glass-card.diplomat .type-name {
+            color: #33A474;
+        }
+        .glass-card.diplomat .corner-badge {
+            background: linear-gradient(45deg, #33A474, #2a8a62);
+        }
+        .glass-card.diplomat .card-desc {
+            color: #2a8a62;
+        }
+
+        /* 番人 (SJ) - 青 */
+        .glass-card.sentinel {
+            background: rgba(66, 152, 180, 0.1);
+        }
+        .glass-card.sentinel .card-header {
+            border-bottom-color: rgba(66, 152, 180, 0.25);
+        }
+        .glass-card.sentinel .type-name {
+            color: #4298B4;
+        }
+        .glass-card.sentinel .corner-badge {
+            background: linear-gradient(45deg, #4298B4, #357a94);
+        }
+        .glass-card.sentinel .card-desc {
+            color: #357a94;
+        }
+
+        /* 探検家 (SP) - 黄 */
+        .glass-card.explorer {
+            background: rgba(228, 174, 58, 0.12);
+        }
+        .glass-card.explorer .card-header {
+            border-bottom-color: rgba(228, 174, 58, 0.3);
+        }
+        .glass-card.explorer .type-name {
+            color: #C99A20;
+        }
+        .glass-card.explorer .corner-badge {
+            background: linear-gradient(45deg, #D4A020, #b8890a);
+        }
+        .glass-card.explorer .card-desc {
+            color: #a07810;
+        }
+
+        .corner-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: white;
+            font-size: 0.65rem;
+            padding: 4px 10px 4px 8px;
+            border-radius: 0 0 20px 0;
+            font-weight: bold;
+            z-index: 1;
+        }
+        .card-header {
+            text-align: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            min-height: 0;
+        }
+        .card-left {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+        }
+        .avatar-img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        .page-indicator {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #e879a0;
+            background: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .bg-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 220, 225, 0.25) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        const avatarBase = "https://www.16personalities.com/static/images/personality-types/avatars/";
+        
+        const avatarMap = {
+            INTJ: "intj-architect-male",
+            INTP: "intp-logician-female",
+            ENTJ: "entj-commander-female",
+            ENTP: "entp-debater-male",
+            INFJ: "infj-advocate-male",
+            INFP: "infp-mediator-female",
+            ENFJ: "enfj-protagonist-male",
+            ENFP: "enfp-campaigner-female",
+            ISTJ: "istj-logistician-male",
+            ISFJ: "isfj-defender-female",
+            ESTJ: "estj-executive-female",
+            ESFJ: "esfj-consul-male",
+            ISTP: "istp-virtuoso-male",
+            ISFP: "isfp-adventurer-female",
+            ESTP: "estp-entrepreneur-male",
+            ESFP: "esfp-entertainer-female"
+        };
+
+        // MBTIタイプからグループを判定
+        function getGroupClass(type) {
+            const secondLetter = type[1]; // N or S
+            const thirdLetter = type[2];  // T or F (for N types) or third letter for S types
+            
+            if (secondLetter === 'N' && thirdLetter === 'T') return 'analyst';   // NT: 分析家
+            if (secondLetter === 'N' && thirdLetter === 'F') return 'diplomat';  // NF: 外交官
+            if (secondLetter === 'S' && thirdLetter === 'J') return 'sentinel';  // SJ: 番人
+            if (secondLetter === 'S' && thirdLetter === 'P') return 'explorer';  // SP: 探検家
+            // SJ/SP の判定を修正
+            if (secondLetter === 'S') {
+                const fourthLetter = type[3]; // J or P
+                if (fourthLetter === 'J') return 'sentinel';
+                if (fourthLetter === 'P') return 'explorer';
+            }
+            return 'analyst'; // fallback
+        }
+
+        const title = "愛の持久力テスト！<br>長続きするMBTIランキング"
+        const allData = [
+  { "rank": 1, "type": "ISTJ", "name": "管理者", "desc": "一度始めた恋はブレない" },
+  { "rank": 2, "type": "ISFJ", "name": "擁護者", "desc": "安定感があり長続き" },
+  { "rank": 3, "type": "INFJ", "name": "提唱者", "desc": "始まると深く長い" },
+  { "rank": 4, "type": "ESFJ", "name": "領事", "desc": "現実的で関係維持が上手" },
+  { "rank": 5, "type": "ENFJ", "name": "主人公", "desc": "相手の幸せ＝自分の幸せ" },
+  { "rank": 6, "type": "INFP", "name": "仲介者", "desc": "情が深く別れにくい" },
+  { "rank": 7, "type": "ISFP", "name": "冒険家", "desc": "思い出に執着しがち" },
+  { "rank": 8, "type": "ENTJ", "name": "指揮官", "desc": "成長型の長期恋愛" },
+  { "rank": 9, "type": "INTJ", "name": "建築家", "desc": "関係をじっくり育てる" },
+  { "rank": 10, "type": "ENTP", "name": "討論者", "desc": "興味が続けば超長期" },
+  { "rank": 11, "type": "ISTP", "name": "巨匠", "desc": "合う人探しが難しい" },
+  { "rank": 12, "type": "INTP", "name": "論理学者", "desc": "違和感を感じると終了" },
+  { "rank": 13, "type": "ENFP", "name": "運動家", "desc": "刺激がないと飽きる" },
+  { "rank": 14, "type": "ESTJ", "name": "幹部", "desc": "仕事優先で恋愛後回し" },
+  { "rank": 15, "type": "ESFP", "name": "エンターテイナー", "desc": "熱しやすく冷めやすい" },
+  { "rank": 16, "type": "ESTP", "name": "起業家", "desc": "刺激重視で長期が苦手" }
+];
+
+        const itemsPerPage = 4;
+        const totalPages = Math.ceil(allData.length / itemsPerPage);
+
+        for (let i = 0; i < totalPages; i++) {
+            const pageData = allData.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
+            
+            document.write(`
+                <div class="insta-canvas">                    
+                    <span class="page-indicator">${i + 1} / ${totalPages}</span>
+                    <header class="text-center mb-6 relative z-10">
+                        <h1 class="text-[20px] font-bold kiwi-font leading-tight text-pink-800">
+                            ${title}
+                        </h1>
+                    </header>
+
+                    <div class="grid-container relative z-10">
+            `);
+
+            pageData.forEach(item => {
+                const avatarUrl = `${avatarBase}${avatarMap[item.type]}.svg?v=3`;
+                const groupClass = getGroupClass(item.type);
+                const cornerBadge = item.rank ? `<span class="corner-badge">${item.rank}</span>` : '';
+                document.write(`
+                    <div class="glass-card ${groupClass}">
+                        ${cornerBadge}
+                        <div class="card-header">
+                            <span class="font-bold text-[18px] type-name">${item.type} ${item.name}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-left">
+                                <img src="${avatarUrl}" class="avatar-img" alt="${item.type}" onerror="this.src='https://www.16personalities.com/static/images/personality-types/avatars/${item.type.toLowerCase()}.svg'">
+                            </div>
+                            <div class="card-right">
+                                <p class="text-[14px] font-bold card-desc leading-relaxed">
+                                    ${item.desc}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            });
+
+            document.write(`
+                    </div>
+                    <footer class="mt-4 flex justify-between items-center text-[10px] text-pink-400 border-t border-pink-100 pt-4 relative z-10">
+                        <span>@mbti.ski</span>
+                        <span class="font-bold text-pink-500">${i === totalPages - 1 ? '' : 'Swipe ⮕'}</span>
+                    </footer>
+                </div>
+            `);
+        }
+    </script>
+
+</body>
+</html>
