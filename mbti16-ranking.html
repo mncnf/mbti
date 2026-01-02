@@ -157,22 +157,22 @@
         // { type: "ESFP", name: "エンターテイナー", desc: "楽しさを奪う継続的な批判には距離を置きます。常に前向きでいたい自分を否定し、暗い気持ちにさせる相手とは、どんなに親しくても付き合いを止めます。" }
 
         const allData = [
-  { "rank": 1, "type": "ENTJ", "name": "", "desc": "論理＋圧で一気に進めるタイプ。言い争いの完成形。" },
-  { "rank": 2, "type": "ENTP", "name": "討論者", "desc": "機転・話術が抜群。冗談＋言葉の攻撃がうまい。" },
-  { "rank": 3, "type": "ESTP", "name": "起業家", "desc": "空気を読む力と瞬発力が高く、攻撃的。" },
-  { "rank": 4, "type": "ENFJ", "name": "主人公", "desc": "場の雰囲気を掌握し、心理的に先手を打つ。" },
-  { "rank": 5, "type": "INTJ", "name": "建築家", "desc": "言い合いが始まる前から頭の中で設計済み。" },
-  { "rank": 6, "type": "ESTJ", "name": "幹部", "desc": "原理原則で詰めて、反論させない。" },
-  { "rank": 7, "type": "INFJ", "name": "提唱者", "desc": "相手の心理をすでに見抜いている。" },
-  { "rank": 8, "type": "ISTP", "name": "巨匠", "desc": "静かに聞いて、最後は事実で一つずつ刺す。" },
-  { "rank": 9, "type": "INTP", "name": "論理学者", "desc": "論理でじっくり追い詰めるが、瞬発力はやや控えめ。" },
-  { "rank": 10, "type": "ESFJ", "name": "領事", "desc": "周囲の支持を得やすく、精神的に攻めるタイプ。" },
-  { "rank": 11, "type": "ISFJ", "name": "擁護者", "desc": "過去の出来事まで持ち出して粘り強く話す。" },
-  { "rank": 12, "type": "ENFP", "name": "運動家", "desc": "感情が揺れても、意外と冷静さは保つ。" },
-  { "rank": 13, "type": "ISTJ", "name": "管理者", "desc": "事実ベースの防御は得意だが、即応性は低め。" },
-  { "rank": 14, "type": "ISFP", "name": "冒険家", "desc": "価値観を踏み込まれると口論に。普段は回避傾向。" },
-  { "rank": 15, "type": "ESFP", "name": "エンターテイナー", "desc": "瞬間的なセンスはあるが、主導権はすぐ渡しがち。" },
-  { "rank": 16, "type": "INFP", "name": "仲介者", "desc": "論理より感情重視。感情が傷つくと離脱。" }
+  { "rank": 1, "type": "ISFP", "name": "冒険家", "desc": "もともと狭く深い関係タイプ。恋愛が始まるとさらに世界が狭くなる" },
+  { "rank": 2, "type": "INFP", "name": "仲介者", "desc": "恋人=自分の世界<br>（友達 <<< 恋人）" },
+  { "rank": 3, "type": "ENFP", "name": "運動家", "desc": "いつも連絡してきた子が静かになる<br>（消えた友達）" },
+  { "rank": 4, "type": "ESFP", "name": "エンターテイナー", "desc": "恋人と遊ぶのが楽しすぎて他が見えない" },
+  { "rank": 5, "type": "ENFJ", "name": "主人公", "desc": "恋愛中はスケジュールの中心が全部恋人" },
+  { "rank": 6, "type": "ESFJ", "name": "領事", "desc": "恋人優先で友達は後回し。でも連絡は取る" },
+  { "rank": 7, "type": "ESTP", "name": "起業家", "desc": "友達に会いたくなったら一緒に遊ぶタイプ" },
+  { "rank": 8, "type": "INFJ", "name": "提唱者", "desc": "エネルギーの大半を恋人に使う<br>（でも友達も大事）" },
+  { "rank": 9, "type": "ISFJ", "name": "擁護者", "desc": "恋人最優先だけど友達への連絡も丁寧" },
+  { "rank": 10, "type": "ENTJ", "name": "指揮官", "desc": "生活の中心が仕事と恋人<br>（友達も一応気にする）" },
+  { "rank": 11, "type": "ESTJ", "name": "幹部", "desc": "恋人優先だけど友達付き合いもできる" },
+  { "rank": 12, "type": "ENTP", "name": "討論者", "desc": "恋人がいても人生の楽しさは手放さない" },
+  { "rank": 13, "type": "ISTJ", "name": "管理者", "desc": "恋愛しても生活ルーティンは変わらない" },
+  { "rank": 14, "type": "INTJ", "name": "建築家", "desc": "どんな関係でも誰か一人に依存しない" },
+  { "rank": 15, "type": "INTP", "name": "論理学者", "desc": "もともと連絡が少ないので変化なし" },
+  { "rank": 16, "type": "ISTP", "name": "巨匠", "desc": "元から連絡しないので差が出ない" }
 ];
 
         const itemsPerPage = 4;
@@ -189,7 +189,7 @@
                     <span class="page-indicator">${i + 1} / ${totalPages}</span>
                     <header class="text-center mb-6 relative z-10">
                         <h1 class="text-[20px] font-bold kiwi-font leading-tight text-purple-900">
-                            MBTI別<br>口論が強いランキング
+                            恋愛を始めると「連絡が減りがち」な<br>MBTIランキング
                         </h1>
                     </header>
 
