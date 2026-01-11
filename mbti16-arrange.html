@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: "Rounded M PLUS", sans-serif;
-            background: #f3e8ff;
+            background: #fff0f3;
             color: #4c1d95;
             display: flex;
             flex-direction: column;
@@ -21,7 +21,7 @@
         .insta-canvas {
             width: 600px;
             height: 600px;
-            background: linear-gradient(135deg, #fdfaff 0%, #f3e8ff 100%);
+            background: #fff7f8;
             padding: 40px 30px 30px 30px;
             position: relative;
             display: flex;
@@ -38,8 +38,6 @@
             flex-grow: 1;
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 20px;
             padding: 12px;
             display: flex;
@@ -48,11 +46,78 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
             overflow: hidden;
         }
+        /* 分析家 (NT) - 紫 */
+        .glass-card.analyst {
+            background: rgba(136, 97, 154, 0.1);
+        }
+        .glass-card.analyst .card-header {
+            border-bottom-color: rgba(136, 97, 154, 0.25);
+        }
+        .glass-card.analyst .type-name {
+            color: #88619a;
+        }
+        .glass-card.analyst .corner-badge {
+            background: linear-gradient(45deg, #88619a, #6b4d7a);
+        }
+        .glass-card.analyst .card-desc {
+            color: #6b4d7a;
+        }
+
+        /* 外交官 (NF) - 緑 */
+        .glass-card.diplomat {
+            background: rgba(51, 164, 116, 0.1);
+        }
+        .glass-card.diplomat .card-header {
+            border-bottom-color: rgba(51, 164, 116, 0.25);
+        }
+        .glass-card.diplomat .type-name {
+            color: #33A474;
+        }
+        .glass-card.diplomat .corner-badge {
+            background: linear-gradient(45deg, #33A474, #2a8a62);
+        }
+        .glass-card.diplomat .card-desc {
+            color: #2a8a62;
+        }
+
+        /* 番人 (SJ) - 青 */
+        .glass-card.sentinel {
+            background: rgba(66, 152, 180, 0.1);
+        }
+        .glass-card.sentinel .card-header {
+            border-bottom-color: rgba(66, 152, 180, 0.25);
+        }
+        .glass-card.sentinel .type-name {
+            color: #4298B4;
+        }
+        .glass-card.sentinel .corner-badge {
+            background: linear-gradient(45deg, #4298B4, #357a94);
+        }
+        .glass-card.sentinel .card-desc {
+            color: #357a94;
+        }
+
+        /* 探検家 (SP) - 黄 */
+        .glass-card.explorer {
+            background: rgba(228, 174, 58, 0.12);
+        }
+        .glass-card.explorer .card-header {
+            border-bottom-color: rgba(228, 174, 58, 0.3);
+        }
+        .glass-card.explorer .type-name {
+            color: #C99A20;
+        }
+        .glass-card.explorer .corner-badge {
+            background: linear-gradient(45deg, #D4A020, #b8890a);
+        }
+        .glass-card.explorer .card-desc {
+            color: #a07810;
+        }
+
         .corner-badge {
             position: absolute;
             top: 0;
             left: 0;
-            background: linear-gradient(45deg, #a855f7, #7c3aed);
             color: white;
             font-size: 0.65rem;
             padding: 4px 10px 4px 8px;
@@ -63,7 +128,7 @@
         .card-header {
             text-align: center;
             padding-bottom: 8px;
-            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+            border-bottom: 1px solid;
             margin-bottom: 8px;
             flex-shrink: 0;
         }
@@ -98,7 +163,7 @@
             right: 30px;
             font-size: 11px;
             font-weight: bold;
-            color: #a855f7;
+            color: #e879a0;
             background: white;
             padding: 3px 12px;
             border-radius: 20px;
@@ -108,7 +173,7 @@
             position: absolute;
             width: 300px;
             height: 300px;
-            background: radial-gradient(circle, rgba(216, 180, 254, 0.3) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 220, 225, 0.25) 0%, transparent 70%);
             z-index: 0;
             pointer-events: none;
         }
@@ -138,8 +203,26 @@
             ESFP: "esfp-entertainer-female"
         };
 
+        // MBTIタイプからグループを判定
+        function getGroupClass(type) {
+            const secondLetter = type[1]; // N or S
+            const thirdLetter = type[2];  // T or F (for N types) or third letter for S types
+            
+            if (secondLetter === 'N' && thirdLetter === 'T') return 'analyst';   // NT: 分析家
+            if (secondLetter === 'N' && thirdLetter === 'F') return 'diplomat';  // NF: 外交官
+            if (secondLetter === 'S' && thirdLetter === 'J') return 'sentinel';  // SJ: 番人
+            if (secondLetter === 'S' && thirdLetter === 'P') return 'explorer';  // SP: 探検家
+            // SJ/SP の判定を修正
+            if (secondLetter === 'S') {
+                const fourthLetter = type[3]; // J or P
+                if (fourthLetter === 'J') return 'sentinel';
+                if (fourthLetter === 'P') return 'explorer';
+            }
+            return 'analyst'; // fallback
+        }
+
         const title = "MBTI別<br>愛情表現の仕方の違い"
-        const allData =[
+        const allData = [
   { "type": "INTJ", "name": "建築家", "desc": "多くは語らないけど、選択や行動で愛と信頼を示す" },
   { "type": "INTP", "name": "論理学者", "desc": "感情表現は苦手でも、意味のある会話や思考の共有で愛を見せる" },
   { "type": "ENTJ", "name": "指揮官", "desc": "責任ある態度や計画の中に、相手を組み込むことで愛を表現" },
@@ -165,14 +248,11 @@
             const pageData = allData.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
             
             document.write(`
-                <div class="insta-canvas">
-                    <div class="bg-circle" style="top: -50px; left: -50px;"></div>
-                    <div class="bg-circle" style="bottom: -50px; right: -50px;"></div>
-                    
+                <div class="insta-canvas">                    
                     <span class="page-indicator">${i + 1} / ${totalPages}</span>
                     <header class="text-center mb-6 relative z-10">
-                        <h1 class="text-[20px] font-bold kiwi-font leading-tight text-purple-900">
-                        ${title}
+                        <h1 class="text-[20px] font-bold kiwi-font leading-tight text-pink-800">
+                            ${title}
                         </h1>
                     </header>
 
@@ -181,19 +261,20 @@
 
             pageData.forEach(item => {
                 const avatarUrl = `${avatarBase}${avatarMap[item.type]}.svg?v=3`;
+                const groupClass = getGroupClass(item.type);
                 const cornerBadge = item.rank ? `<span class="corner-badge">${item.rank}</span>` : '';
                 document.write(`
-                    <div class="glass-card">
+                    <div class="glass-card ${groupClass}">
                         ${cornerBadge}
                         <div class="card-header">
-                            <span class="font-bold text-[18px] text-purple-900">${item.type} ${item.name}</span>
+                            <span class="font-bold text-[18px] type-name">${item.type} ${item.name}</span>
                         </div>
                         <div class="card-body">
                             <div class="card-left">
                                 <img src="${avatarUrl}" class="avatar-img" alt="${item.type}" onerror="this.src='https://www.16personalities.com/static/images/personality-types/avatars/${item.type.toLowerCase()}.svg'">
                             </div>
                             <div class="card-right">
-                                <p class="text-[14px] font-bold text-purple-800 leading-relaxed">
+                                <p class="text-[14px] font-bold card-desc leading-relaxed">
                                     ${item.desc}
                                 </p>
                             </div>
@@ -204,9 +285,9 @@
 
             document.write(`
                     </div>
-                    <footer class="mt-4 flex justify-between items-center text-[10px] text-purple-400 border-t border-purple-100 pt-4 relative z-10">
+                    <footer class="mt-4 flex justify-between items-center text-[10px] text-pink-400 border-t border-pink-100 pt-4 relative z-10">
                         <span>@mbti.ski</span>
-                        <span class="font-bold text-purple-600">${i === totalPages - 1 ? '' : 'Swipe ⮕'}</span>
+                        <span class="font-bold text-pink-500">${i === totalPages - 1 ? '' : 'Swipe ⮕'}</span>
                     </footer>
                 </div>
             `);
